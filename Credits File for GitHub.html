@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html><head><style id="qw-theme">:root {
+  --color-bg: #121218;
+  --color-text: #e4e4ed;
+  --color-navbar-bg: #1a1a24;
+  --color-bg-chat-view: #121218;
+  --color-bg-secondary: #1a1a24;
+  --color-bg-tertiary: #1e1e2a;
+  --color-bg-hover: #2a2a38;
+  --color-surface: #1e1e2a;
+  --color-surface-hover: #2a2a38;
+  --color-surface-active: #353546;
+  --color-border: rgba(255, 255, 255, .12);
+  --color-border-light: rgba(255, 255, 255, .06);
+  --color-border-strong: #3a3a4e;
+  --color-primary: #8575ff;
+  --color-primary-dark: #4200db;
+  --color-primary-light: #8575ff;
+  --color-primary-bg: color-mix(in srgb, #8575ff 15%, transparent);
+  --color-primary-hover-border: #4200db;
+  --color-nav-icon-active: #8575ff;
+  --color-nav-hover-border: #8575ff;
+  --color-primary-alpha-3: color-mix(in srgb, #8575ff 3%, transparent);
+  --color-primary-alpha-5: color-mix(in srgb, #8575ff 5%, transparent);
+  --color-primary-alpha-8: color-mix(in srgb, #8575ff 8%, transparent);
+  --color-primary-alpha-12: color-mix(in srgb, #8575ff 12%, transparent);
+  --color-primary-alpha-15: color-mix(in srgb, #8575ff 15%, transparent);
+  --color-primary-alpha-20: color-mix(in srgb, #8575ff 20%, transparent);
+  --color-primary-alpha-25: color-mix(in srgb, #8575ff 25%, transparent);
+  --color-primary-alpha-30: color-mix(in srgb, #8575ff 30%, transparent);
+  --color-primary-alpha-40: color-mix(in srgb, #8575ff 40%, transparent);
+  --color-primary-alpha-50: color-mix(in srgb, #8575ff 50%, transparent);
+  --color-primary-alpha-60: color-mix(in srgb, #8575ff 60%, transparent);
+  --color-primary-subtle: color-mix(in srgb, #8575ff 25%, transparent);
+  --color-primary-border: color-mix(in srgb, #8575ff 50%, transparent);
+  --color-focus-ring: color-mix(in srgb, #8575ff 60%, transparent);
+  --color-sidebar-hover: color-mix(in srgb, #8575ff 15%, transparent);
+  --color-accent: #8575ff;
+  --color-accent-foreground: #8575ff;
+  --color-accent-dark: #4200db;
+  --color-accent-light: color-mix(in srgb, #8575ff 15%, transparent);
+  --color-accent-inverse: #ffffff;
+  --color-link: #8575ff;
+  --color-primary-gradient-end: color-mix(in srgb, #8575ff 35%, transparent);
+  --color-primary-bg-solid: #1a1530;
+  --color-user-bubble: #333843;
+  --color-user-bubble-text: #e4e4ed;
+  --color-text-secondary: #a0a0b4;
+  --color-text-tertiary: #8a8a9a;
+  --color-text-muted: #6e6e82;
+  --color-text-on-primary: #ffffff;
+  --color-success: #4ade80;
+  --color-success-dark: #00802f;
+  --color-success-light: #d9ffd6;
+  --color-success-hover: #005c26;
+  --color-success-bg: #1c2c22;
+  --color-success-border: #0e3d1c;
+  --color-success-foreground: #4ade80;
+  --color-success-dark-foreground: #00802f;
+  --color-success-text: #4ade80;
+  --color-error: #ff6b6b;
+  --color-error-dark: #db0000;
+  --color-error-light: #ffe0e0;
+  --color-error-hover: #3b1a24;
+  --color-error-bg: #3b1a24;
+  --color-error-border: #5e1a24;
+  --color-error-active-border: #db0000;
+  --color-error-foreground: #ff6b6b;
+  --color-error-dark-foreground: #db0000;
+  --color-error-inverse: #ffffff;
+  --color-error-text: #ff6b6b;
+  --color-warning: #fbbf24;
+  --color-warning-dark: #573a00;
+  --color-warning-light: #fffbbd;
+  --color-warning-hover: #db9200;
+  --color-warning-bg: #3d3520;
+  --color-warning-border: #5e4a1a;
+  --color-warning-foreground: #fbbf24;
+  --color-warning-dark-foreground: #573a00;
+  --color-warning-inverse: #573a00;
+  --color-surface-warning: #fffbbd;
+  --color-text-warning: #573a00;
+  --color-info: #60a5fa;
+  --color-info-dark: #006ce0;
+  --color-info-light: #d1f1ff;
+  --color-info-hover: #003b8f;
+  --color-info-bg: #1a2a42;
+  --color-info-border: #0f3d6e;
+  --color-info-foreground: #60a5fa;
+  --color-info-dark-foreground: #002a66;
+  --color-info-inverse: #ffffff;
+  --color-overlay: rgba(0, 0, 0, .7);
+  --color-shadow: rgba(0, 0, 0, .3);
+  --color-hover: rgba(255, 255, 255, .05);
+  --color-tooltip-bg: rgba(30, 30, 42, .95);
+  --color-tooltip-text: #e4e4ed;
+  --color-voice-purple: #8575ff;
+  --color-voice-purple-dark: #4200db;
+  --color-voice-purple-light: #8575ff;
+  --color-voice-red: #ff6b6b;
+  --color-voice-red-dark: #db0000;
+  --color-voice-amber: #fbbf24;
+  --color-voice-purple-glow: rgba(133, 117, 255, .4);
+  --color-voice-red-glow: rgba(219, 0, 0, .4);
+  --font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "Monaco", "Menlo", "Consolas", monospace;
+  --text-2xs: .5625rem;
+  --text-xs: .625rem;
+  --text-sm: .6875rem;
+  --text-base: .75rem;
+  --text-md: .8125rem;
+  --text-lg: .875rem;
+  --text-xl: 1rem;
+  --text-2xl: 1.125rem;
+  --text-3xl: 1.25rem;
+  --text-4xl: 1.5rem;
+  --text-5xl: 2rem;
+  --spacing-1: calc(.25rem * 1);
+  --spacing-1-5: calc(.25rem * 1.5);
+  --spacing-2: calc(.25rem * 2);
+  --spacing-3: calc(.25rem * 3);
+  --spacing-4: calc(.25rem * 4);
+  --spacing-5: calc(.25rem * 5);
+  --spacing-6: calc(.25rem * 6);
+  --spacing-7: calc(.25rem * 7);
+  --spacing-8: calc(.25rem * 8);
+  --spacing-9: calc(.25rem * 9);
+  --spacing-10: calc(.25rem * 10);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 8px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, .3);
+  --color-success-bg-solid: #1a3d28;
+  --color-error-bg-solid: #4a2028;
+  --color-error-border-solid: #5e1a24;
+  --color-warning-bg-solid: #4a3a1e;
+  --color-warning-text: #fbbf24;
+  --color-info-bg-solid: #1a3050;
+  --color-info-bg-solid-alt: #222240;
+  --color-info-text: #60a5fa;
+  --color-info-text-alt: #818cf8;
+  --color-emerald: #34d399;
+  --color-teal: #5eead4;
+  --color-code-bg: #1e1e2a;
+  --color-code-header-bg: #252535;
+  --color-code-text: #e4e4ed;
+  --color-code-border: #2e2e3e;
+  --color-code-muted: #6e6e82;
+  --color-inline-code-bg: #1e1e2a;
+  --color-inline-code-text: #e4e4ed;
+  --color-inline-code-border: #2e2e3e;
+  --color-scrollbar-thumb: #3a3a4e;
+  --color-scrollbar-track: transparent;
+  --color-graph-node-text: #e4e4ed;
+  --color-graph-node-text-dim: #6e6e82;
+  --color-graph-edge-default: #6e6e82;
+  --color-graph-edge-cross: #F39C12;
+  --color-graph-edge-text: #a0a0b4;
+  --color-graph-edge-stroke: #1a1a24;
+  --color-graph-highlight-bg: #FF6B6B;
+  --color-graph-highlight-border: #E74C3C;
+  --color-graph-search-bg: #FFD700;
+  --color-graph-search-border: #FFA500;
+  --color-graph-focus-border: #FF4444;
+  --color-graph-external-border: #6e6e82;
+  --color-graph-cat-file: #5DADE2;
+  --color-graph-cat-folder: #AAB7B8;
+  --color-graph-cat-file-aggregate: #5499C7;
+  --color-graph-cat-class: #BB8FCE;
+  --color-graph-cat-function: #58D68D;
+  --color-graph-cat-method: #48C9B0;
+  --color-graph-cat-variable: #F5B041;
+  --color-graph-cat-import: #EB984E;
+  --color-graph-cat-module: #7E8CE0;
+  --color-graph-cat-concept: #EC7063;
+  --color-graph-cat-person: #FF8A8A;
+  --color-graph-cat-org: #76D7C4;
+  --color-graph-cat-organization: #76D7C4;
+  --color-graph-cat-product: #B8B0FE;
+  --color-graph-cat-metric: #FEA0C0;
+  --color-graph-cat-location: #7E9BB5;
+  --color-graph-cat-date: #F092C0;
+  --color-graph-cat-code: #5DADE2;
+  --color-graph-cat-doc: #AAB7B8;
+  --color-graph-cat-url: #45D6B5;
+  --color-graph-cat-email: #8E7CF7;
+  --color-graph-cat-unknown: #D5DBDB;
+  --color-graph-rel-contains: #D5DBDB;
+  --color-graph-rel-extends: #BB8FCE;
+  --color-graph-rel-implements: #5DADE2;
+  --color-graph-rel-imports: #EB984E;
+  --color-graph-rel-uses: #58D68D;
+  --color-graph-rel-calls: #52BE80;
+  --color-graph-rel-references: #F5B041;
+  --color-graph-rel-related-to: #AAB7B8;
+  --color-graph-rel-works-on: #EC7063;
+  --color-graph-rel-owns: #48C9B0;
+  --color-graph-rel-depends-on: #EB984E;
+  --color-graph-rel-parent-of: #D5DBDB;
+  --qs-content: #fff;
+  --qs-main: #fff;
+  --qs-primary-foreground: #131920;
+  --qs-secondary-foreground: #656871;
+  --qs-tertiary-foreground: #6e6e82;
+  --qs-placeholder-foreground: #8c8c94;
+  --qs-divider: #dedee3;
+  --qs-default-border: #8c8c94;
+  --qs-neutral-soft: #b4b4bb;
+  --qs-neutral-gray-50: #1e1e2a;
+  --qs-tertiary-background: #1e1e2a;
+  --qs-action-hover: #f3f3f7;
+  --qs-primary-default: #4200db;
+  --qs-primary-dark: #35009e;
+  --qs-primary-light: #e8e6ff;
+  --qs-success-default: #00802f;
+  --qs-error-default: #db0000;
+  --qs-font-sans: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-family: "Amazon Ember", "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  --qs-font-base-letter-spacing: .15px;
+  --qs-shadow-sm: 0 0 2px 0 #00000029, 0 0 4px 0 #00000029;
+  --qs-shadow-md: 0 0 2px 0 #00000029, 0 2px 8px 1px #00000029;
+  --qs-shadow-lg: 0 4px 16px 4px #00000029, 0 2px 6px 1px #00000029;
+  --qs-shadow-xl: 0 4px 8px 2px #00000029, 0 6px 20px 4px #00000029;
+  --qs-width-modal-sm: 384px;
+  --qs-width-modal-md: 600px;
+  --qs-width-modal-lg: 1136px;
+  --qs-grid-gap: 16px;
+  --qs-grid-gap-xl: 24px;
+  --qs-primary-medium: #8575ff;
+  --qs-primary-inverse: #fff;
+  --qs-neutral-lightest: #f9f9fb;
+  --qs-neutral-light: #f3f3f7;
+  --qs-neutral-default: #dedee3;
+  --qs-neutral-medium: #8c8c94;
+  --qs-neutral-deep: #656871;
+  --qs-neutral-dark: #333843;
+  --qs-neutral-strong: #131920;
+  --qs-neutral-white: #fff;
+  --qs-neutral-black: #000;
+  --qs-success-medium: #005c26;
+  --qs-success-dark: #00471e;
+  --qs-success-light: #d9ffd6;
+  --qs-success-inverse: #fff;
+  --qs-info-default: #006ce0;
+  --qs-info-medium: #003b8f;
+  --qs-info-dark: #002a66;
+  --qs-info-light: #d1f1ff;
+  --qs-info-inverse: #fff;
+  --qs-warning-default: #f2b100;
+  --qs-warning-medium: #db9200;
+  --qs-warning-dark: #573a00;
+  --qs-warning-light: #fffbbd;
+  --qs-warning-inverse: #573a00;
+  --qs-warning-experimental: #f2b100;
+  --qs-warning-experimental-light: #fffbbd;
+  --qs-warning-experimental-light-foreground: #fffbbd;
+  --qs-error-medium: #900;
+  --qs-error-dark: #700000;
+  --qs-error-light: #ffe0e0;
+  --qs-error-inverse: #fff;
+  --qs-connection-default: #db3300;
+  --qs-connection-soft: #ff997a;
+  --qs-connection-light: #ffe0d6;
+  --qs-connection-dark: #661800;
+  --qs-automation-default: #b3008f;
+  --qs-automation-medium: #d600ba;
+  --qs-automation-soft: #ff94f1;
+  --qs-automation-light: #ffe0fb;
+  --qs-automation-dark: #660052;
+  --qs-insight-default: #a000b8;
+  --qs-insight-soft: #f299ff;
+  --qs-insight-light: #fce6ff;
+  --qs-insight-dark: #590066;
+  --qs-visualization-default: #7300e5;
+  --qs-visualization-soft: #d4a8ff;
+  --qs-visualization-light: #f2e5ff;
+  --qs-visualization-dark: #45008a;
+  --qs-spice: #ff9800;
+  --qs-coachmark: #006ce0;
+  --qs-brand: #fff;
+  --qs-brand-foreground: #131920;
+  --qs-brand-navbar: #131920;
+  --qs-brand-navbar-foreground: #fff;
+  --qs-brand-navbar-light: #dedee3;
+  --qs-brand-navbar-dark: #000;
+  --qs-application-navbar: #4200db;
+  --qs-application-navbar-foreground: #fff;
+  --qs-application-navbar-light: #e8e6ff;
+  --qs-application-navbar-dark: #35009e;
+  --qs-dimension: #4200db;
+  --qs-dimension-foreground: #fff;
+  --qs-dimension-experimental: #4200db;
+  --qs-dimension-experimental-foreground: #4200db;
+  --qs-measure: #00802f;
+  --qs-measure-foreground: #fff;
+  --qs-measure-experimental: #f2b100;
+  --qs-measure-experimental-foreground: #f2b100;
+  --qs-content-inverse: #333843;
+  --qs-content-inverse-active: #131920;
+  --qs-secondary: #dedee3;
+  --qs-disabled: #8c8c94;
+  --qs-divider-light: #f3f3f7;
+  --qs-hover-border: #333843;
+  --qs-active-border: #4200db;
+  --qs-disabled-border: #dedee3;
+  --qs-error-border: #ffe0e0;
+  --qs-error-active-border: #db0000;
+  --qs-disabled-foreground: #b4b4bb;
+  --qs-primary-inverse-foreground: #fff;
+  --qs-error-foreground: #db0000;
+  --qs-contrast-foreground: #131920;
+  --qs-main-foreground: #131920;
+  --qs-main-secondary-foreground: #656871;
+  --qs-action-disabled: #f3f3f7;
+  --qs-action-active: #e8e6ff;
+  --qs-default-badge: #dedee3;
+  --qs-tag-default: #dedee3;
+  --qs-tag-soft-border: #b4b4bb;
+  --qs-focus-offset: 1px;
+  --qs-toggle-tile-sm: calc(.25rem * 8);
+  --qs-toggle-tile-md: calc(.25rem * 12);
+  --qs-toggle-tile-lg: calc(.25rem * 15);
+  --qs-shadow-pin-right: inset 4px 0 4px -4px #00000029;
+  --qs-shadow-pin-left: inset -4px 0 4px -4px #00000029;
+  --react-pdf-text-layer: 1;
+  --highlight-bg-color: rgba(180, 0, 170, 1);
+  --highlight-selected-bg-color: rgba(0, 100, 0, 1);
+  --react-pdf-annotation-layer: 1;
+  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+  --input-focus-border-color: Highlight;
+  --input-focus-outline: 1px solid Canvas;
+  --input-unfocused-border-color: transparent;
+  --input-disabled-border-color: transparent;
+  --input-hover-border-color: black;
+  --link-outline: none;
+  color-scheme: dark;
+}
+body { background: var(--color-bg); color: var(--color-text); }
+a { color: var(--color-link, var(--color-primary)); }</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Startup Credits — Self-Service Portal</title>
+<meta name="description" content="Get AWS credits to build your startup instantly. Apply in minutes, no sales rep required.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --aws-squid: #232f3e;
+  --aws-dark: #0f1b2d;
+  --aws-navy: #1b2a3e;
+  --aws-slate: #243447;
+  --aws-orange: #ff9900;
+  --aws-orange-lt: #ffad33;
+  --aws-teal: #00a1c9;
+  --aws-green: #2ea043;
+  --aws-purple: #8c4fff;
+  --aws-text: #f2f3f3;
+  --aws-text-sec: #d5dbdb;
+  --aws-text-mut: #8899a6;
+  --aws-border: #3a4f63;
+  --aws-card: #1e2f42;
+  --aws-card-hover: #253a50;
+  --font: "Amazon Ember", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+body { font-family: var(--font); background: var(--aws-dark); color: var(--aws-text); }
+
+/* Top Bar */
+.topbar { background: #0a1120; padding: 12px 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--aws-border); }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.topbar-logo .aws { color: var(--aws-orange); font-size: 20px; }
+.topbar-links { display: flex; gap: 24px; }
+.topbar-links a { color: var(--aws-text-sec); font-size: 13px; text-decoration: none; transition: color 0.15s; cursor: pointer; }
+.topbar-links a:hover { color: #fff; }
+.topbar-cta { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: var(--aws-orange); color: var(--aws-dark); }
+.topbar-cta:hover { background: var(--aws-orange-lt); }
+
+/* Admin toggle */
+.admin-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 999; background: var(--aws-orange); color: var(--aws-dark); padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px; }
+.admin-toggle:hover { background: var(--aws-orange-lt); }
+
+/* Views */
+.view { display: none; }
+.view.active { display: block; }
+
+/* Hero */
+.hero { padding: 80px 48px 72px; background: linear-gradient(160deg, #0a1120 0%, #1b2a3e 50%, #162438 100%); text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -40%; right: -10%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,153,0,0.06), transparent 65%); border-radius: 50%; }
+.hero::after { content: ''; position: absolute; bottom: -40%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,161,201,0.04), transparent 65%); border-radius: 50%; }
+.hero-tag { display: inline-block; background: rgba(255,153,0,0.12); color: var(--aws-orange); font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 12px; margin-bottom: 20px; letter-spacing: 0.03em; }
+.hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 18px; line-height: 1.12; max-width: 780px; margin-left: auto; margin-right: auto; position: relative; color: #fff; }
+.hero h1 .hl { color: var(--aws-orange); }
+.hero p { font-size: 18px; color: var(--aws-text-sec); max-width: 620px; margin: 0 auto 36px; line-height: 1.6; }
+.hero-btns { display: flex; gap: 12px; justify-content: center; margin-bottom: 52px; }
+.btn { padding: 13px 30px; border-radius: 22px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+.btn-primary { background: var(--aws-orange); color: var(--aws-dark); }
+.btn-primary:hover { background: var(--aws-orange-lt); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: #fff; border: 1px solid var(--aws-border); }
+.btn-ghost:hover { border-color: var(--aws-orange); color: var(--aws-orange); }
+.hero-trust { display: flex; justify-content: center; gap: 56px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.06); }
+.trust-item { text-align: center; }
+.trust-val { font-size: 32px; font-weight: 700; color: var(--aws-orange); }
+.trust-lbl { font-size: 12px; color: var(--aws-text-mut); margin-top: 2px; }
+
+/* Section */
+.section { padding: 72px 48px; max-width: 1200px; margin: 0 auto; }
+.section-alt { background: var(--aws-navy); }
+.sec-header { text-align: center; margin-bottom: 44px; }
+.sec-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+.sec-header p { font-size: 15px; color: var(--aws-text-sec); max-width: 600px; margin: 0 auto; }
+
+/* Program Cards */
+.programs { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; max-width: 1200px; margin: 0 auto; }
+.prog-card { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 12px; padding: 28px; transition: all 0.2s; position: relative; overflow: hidden; }
+.prog-card:hover { border-color: var(--aws-orange); background: var(--aws-card-hover); box-shadow: 0 8px 32px rgba(255,153,0,0.06); transform: translateY(-2px); }
+.prog-card.popular::before { content: 'MOST POPULAR'; position: absolute; top: 12px; right: -28px; background: var(--aws-orange); color: var(--aws-dark); font-size: 9px; font-weight: 700; padding: 3px 32px; transform: rotate(45deg); letter-spacing: 0.05em; }
+.prog-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+.prog-icon.orange { background: rgba(255,153,0,0.12); color: var(--aws-orange); }
+.prog-icon.teal { background: rgba(0,161,201,0.12); color: var(--aws-teal); }
+.prog-icon.purple { background: rgba(140,79,255,0.12); color: var(--aws-purple); }
+.prog-icon.green { background: rgba(46,160,67,0.12); color: var(--aws-green); }
+.prog-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+.prog-tagline { font-size: 13px; color: var(--aws-text-mut); margin-bottom: 16px; }
+.prog-credit { font-size: 28px; font-weight: 700; font-family: monospace; color: var(--aws-orange); }
+.prog-credit span { font-size: 14px; font-weight: 400; color: var(--aws-text-mut); }
+.prog-features { list-style: none; margin-top: 16px; }
+.prog-features li { font-size: 13px; color: var(--aws-text-sec); padding: 5px 0; display: flex; align-items: center; gap: 8px; }
+.prog-features li i { color: var(--aws-green); font-size: 12px; }
+.prog-btn { display: block; width: 100%; text-align: center; padding: 11px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 20px; border: none; background: var(--aws-orange); color: var(--aws-dark); transition: all 0.15s; }
+.prog-btn:hover { background: var(--aws-orange-lt); }
+.prog-btn.outline { background: transparent; border: 1px solid var(--aws-border); color: var(--aws-text-sec); }
+.prog-btn.outline:hover { border-color: var(--aws-orange); color: var(--aws-orange); }
+
+/* How It Works */
+.steps { display: flex; gap: 0; max-width: 1000px; margin: 0 auto; }
+.step { flex: 1; text-align: center; padding: 32px 16px; background: var(--aws-card); border: 1px solid var(--aws-border); position: relative; }
+.step:first-child { border-radius: 12px 0 0 12px; }
+.step:last-child { border-radius: 0 12px 12px 0; }
+.step::after { content: '\2192'; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--aws-orange); z-index: 1; font-weight: 700; }
+.step:last-child::after { display: none; }
+.step-num { display: inline-block; width: 28px; height: 28px; line-height: 28px; border-radius: 50%; background: var(--aws-orange); color: var(--aws-dark); font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+.step-icon { font-size: 28px; color: var(--aws-text-sec); margin-bottom: 10px; }
+.step-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: #fff; }
+.step-desc { font-size: 12px; color: var(--aws-text-mut); line-height: 1.4; }
+
+/* Eligibility */
+.elig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 900px; margin: 0 auto; }
+.elig-card { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 10px; padding: 24px; }
+.elig-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
+.elig-card h3 i { color: var(--aws-orange); }
+.elig-list { list-style: none; }
+.elig-list li { font-size: 13px; color: var(--aws-text-sec); padding: 5px 0; padding-left: 18px; position: relative; }
+.elig-list li::before { content: '\2713'; position: absolute; left: 0; color: var(--aws-green); font-weight: 700; font-size: 12px; }
+
+/* FAQ */
+.faq { max-width: 800px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--aws-border); }
+.faq-q { padding: 18px 0; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+.faq-q i { color: var(--aws-text-mut); transition: transform 0.2s; font-size: 12px; }
+.faq-q.open i { transform: rotate(180deg); }
+.faq-a { padding: 0 0 18px; font-size: 13px; color: var(--aws-text-sec); line-height: 1.6; display: none; }
+.faq-a.open { display: block; }
+
+/* CTA Footer */
+.cta-footer { padding: 72px 48px; text-align: center; background: linear-gradient(160deg, #0a1120, #1b2a3e); border-top: 1px solid var(--aws-border); }
+.cta-footer h2 { font-size: 30px; font-weight: 700; margin-bottom: 12px; color: #fff; }
+.cta-footer p { color: var(--aws-text-mut); max-width: 560px; margin: 0 auto 28px; font-size: 15px; line-height: 1.5; }
+
+/* ===== ADMIN PORTAL ===== */
+.admin-bar { background: var(--aws-navy); padding: 16px 48px; border-bottom: 1px solid var(--aws-border); display: flex; justify-content: space-between; align-items: center; }
+.admin-bar h2 { font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #fff; }
+.admin-bar h2 i { color: var(--aws-orange); }
+.live-ind { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--aws-green); font-weight: 600; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--aws-green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+.admin-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 20px 48px; }
+.kpi { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 8px; padding: 16px; }
+.kpi-label { font-size: 10px; color: var(--aws-text-mut); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+.kpi-val { font-size: 24px; font-weight: 700; font-family: monospace; margin-top: 6px; color: #fff; }
+.kpi-delta { font-size: 11px; margin-top: 3px; }
+.kpi-delta.up { color: var(--aws-green); }
+.kpi-delta.neutral { color: var(--aws-text-mut); }
+
+.admin-content { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; padding: 0 48px 32px; }
+.a-panel { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 8px; padding: 20px; }
+.a-panel h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--aws-text-mut); margin-bottom: 14px; }
+
+.q-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--aws-border); }
+.q-row:last-child { border: none; }
+.q-left { display: flex; align-items: center; gap: 10px; }
+.q-av { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+.q-name { font-size: 13px; font-weight: 500; color: #fff; }
+.q-sub { font-size: 11px; color: var(--aws-text-mut); }
+.q-amt { font-size: 13px; font-weight: 600; font-family: monospace; color: #fff; }
+.q-badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.q-badge.pen { background: rgba(255,153,0,0.15); color: var(--aws-orange); }
+.q-badge.app { background: rgba(46,160,67,0.15); color: var(--aws-green); }
+.q-badge.auto { background: rgba(0,82,204,0.15); color: #4da6ff; }
+
+.alert-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--aws-border); }
+.alert-row:last-child { border: none; }
+.alert-ic { width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+.alert-ic.red { background: rgba(209,50,18,0.15); color: #ff6b4a; }
+.alert-ic.yel { background: rgba(255,153,0,0.15); color: var(--aws-orange); }
+
+.conv-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.conv-box { text-align: center; padding: 12px; background: var(--aws-navy); border-radius: 6px; }
+.conv-val { font-size: 20px; font-weight: 700; font-family: monospace; color: #fff; }
+.conv-val.green { color: var(--aws-green); }
+.conv-val.orange { color: var(--aws-orange); }
+.conv-lbl { font-size: 10px; color: var(--aws-text-mut); text-transform: uppercase; margin-top: 3px; }
+
+@media (max-width: 900px) {
+  .topbar { padding: 12px 20px; }
+  .topbar-links { display: none; }
+  .programs { grid-template-columns: 1fr; }
+  .steps { flex-direction: column; }
+  .step { border-radius: 0 !important; }
+  .step::after { display: none !important; }
+  .elig-grid { grid-template-columns: 1fr; }
+  .admin-kpis { grid-template-columns: repeat(2, 1fr); }
+  .admin-content { grid-template-columns: 1fr; }
+  .hero { padding: 48px 20px; }
+  .hero h1 { font-size: 32px; }
+  .hero-trust { flex-wrap: wrap; gap: 24px; }
+  .section { padding: 48px 20px; }
+  .cta-footer { padding: 48px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo"><span class="aws"><i class="fa-brands fa-aws"></i></span> Startup Credits</div>
+    <div class="topbar-links">
+      <a onclick="scrollTo('programs')">Programs</a>
+      <a onclick="scrollTo('how')">How It Works</a>
+      <a onclick="scrollTo('eligibility')">Eligibility</a>
+      <a onclick="scrollTo('faq')">FAQ</a>
+    </div>
+  </div>
+  <button class="topbar-cta" onclick="scrollTo('programs')">Check My Eligibility</button>
+</div>
+
+<!-- Admin toggle (internal demo only) -->
+<div class="admin-toggle" onclick="toggleAdmin()">
+  <i class="fa-solid fa-lock"></i> <span id="admin-toggle-text">Admin Portal</span>
+</div>
+
+<!-- ===== CUSTOMER VIEW ===== -->
+<div id="view-customer" class="view active">
+
+  <div class="hero">
+    <div class="hero-tag"><i class="fa-solid fa-bolt" style="margin-right:4px"></i> No Sales Rep Required</div>
+    <h1>Get AWS credits to <span class="hl">build your startup</span> — instantly</h1>
+    <p>Apply for credits in minutes, get approved automatically, and start building on AWS today. No meetings, no paperwork, no waiting.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="scrollTo('programs')"><i class="fa-solid fa-rocket"></i> View Programs</button>
+      <button class="btn btn-ghost" onclick="scrollTo('how')">How It Works</button>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><div class="trust-val">50K+</div><div class="trust-lbl">Startups Funded</div></div>
+      <div class="trust-item"><div class="trust-val">&lt; 5 min</div><div class="trust-lbl">Application Time</div></div>
+      <div class="trust-item"><div class="trust-val">Instant</div><div class="trust-lbl">Approval for Most</div></div>
+      <div class="trust-item"><div class="trust-val">$0</div><div class="trust-lbl">Cost to Apply</div></div>
+    </div>
+  </div>
+
+  <!-- Programs -->
+  <div class="section" id="programs">
+    <div class="sec-header">
+      <h2>Choose your credit program</h2>
+      <p>Select the program that best fits your stage and needs. Apply in minutes — most startups are approved instantly.</p>
+    </div>
+    <div class="programs">
+      <div class="prog-card popular">
+        <div class="prog-icon orange"><i class="fa-solid fa-rocket"></i></div>
+        <div class="prog-name">Activate Standard</div>
+        <div class="prog-tagline">For early-stage startups getting started on AWS</div>
+        <div class="prog-credit">Up to $5,000 <span>in credits</span></div>
+        <ul class="prog-features">
+          <li><i class="fa-solid fa-check"></i> Valid for 12 months</li>
+          <li><i class="fa-solid fa-check"></i> Apply to any AWS service</li>
+          <li><i class="fa-solid fa-check"></i> No minimum spend required</li>
+          <li><i class="fa-solid fa-check"></i> Technical training included</li>
+          <li><i class="fa-solid fa-check"></i> Instant approval</li>
+        </ul>
+        <button class="prog-btn">Apply Now — Free</button>
+      </div>
+
+      <div class="prog-card">
+        <div class="prog-icon teal"><i class="fa-solid fa-arrow-up-right-dots"></i></div>
+        <div class="prog-name">Activate Pro</div>
+        <div class="prog-tagline">For funded startups ready to scale</div>
+        <div class="prog-credit">Up to $15,000 <span>in credits</span></div>
+        <ul class="prog-features">
+          <li><i class="fa-solid fa-check"></i> Valid for 24 months</li>
+          <li><i class="fa-solid fa-check"></i> Business &amp; technical support</li>
+          <li><i class="fa-solid fa-check"></i> Architecture guidance</li>
+          <li><i class="fa-solid fa-check"></i> VC-backed startups</li>
+          <li><i class="fa-solid fa-check"></i> Approved within 24 hours</li>
+        </ul>
+        <button class="prog-btn">Apply Now — Free</button>
+      </div>
+
+      <div class="prog-card">
+        <div class="prog-icon purple"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="prog-name">Growth Credits</div>
+        <div class="prog-tagline">For startups expanding workloads on AWS</div>
+        <div class="prog-credit">Up to $25,000 <span>in credits</span></div>
+        <ul class="prog-features">
+          <li><i class="fa-solid fa-check"></i> For Series A+ companies</li>
+          <li><i class="fa-solid fa-check"></i> AWS solution architect access</li>
+          <li><i class="fa-solid fa-check"></i> Cost optimization review</li>
+          <li><i class="fa-solid fa-check"></i> Partner ecosystem access</li>
+          <li><i class="fa-solid fa-check"></i> Approved within 24 hours</li>
+        </ul>
+        <button class="prog-btn outline">Apply Now — Free</button>
+      </div>
+
+      <div class="prog-card">
+        <div class="prog-icon green"><i class="fa-solid fa-arrows-turn-to-dots"></i></div>
+        <div class="prog-name">Migrate Credits</div>
+        <div class="prog-tagline">Moving workloads to AWS from another cloud</div>
+        <div class="prog-credit">Up to $25,000 <span>in credits</span></div>
+        <ul class="prog-features">
+          <li><i class="fa-solid fa-check"></i> Migration support included</li>
+          <li><i class="fa-solid fa-check"></i> Covers migration tooling costs</li>
+          <li><i class="fa-solid fa-check"></i> Architecture assessment</li>
+          <li><i class="fa-solid fa-check"></i> Any source cloud/on-prem</li>
+          <li><i class="fa-solid fa-check"></i> Approved within 24 hours</li>
+        </ul>
+        <button class="prog-btn outline">Apply Now — Free</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="section-alt" id="how">
+    <div class="section">
+      <div class="sec-header">
+        <h2>How it works</h2>
+        <p>From application to credits in your account — no meetings, no phone calls, no reps.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-icon"><i class="fa-solid fa-file-lines"></i></div>
+          <div class="step-title">Tell Us About You</div>
+          <div class="step-desc">Company name, funding stage, what you're building — takes under 5 minutes</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <div class="step-title">Instant Eligibility</div>
+          <div class="step-desc">Our system checks your info and matches you to the right program automatically</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="step-title">Get Approved</div>
+          <div class="step-desc">Most startups are approved instantly. Some programs confirm within 24 hours</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-icon"><i class="fa-solid fa-bolt"></i></div>
+          <div class="step-title">Start Building</div>
+          <div class="step-desc">Credits are applied to your AWS account immediately — start using any service</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eligibility -->
+  <div class="section" id="eligibility">
+    <div class="sec-header">
+      <h2>Am I eligible?</h2>
+      <p>Most early-stage startups qualify. Here's what we look for.</p>
+    </div>
+    <div class="elig-grid">
+      <div class="elig-card">
+        <h3><i class="fa-solid fa-building"></i> Company Requirements</h3>
+        <ul class="elig-list">
+          <li>Company is less than 10 years old</li>
+          <li>Revenue under $100M annually</li>
+          <li>Not previously received AWS Activate credits exceeding program limit</li>
+          <li>Has a valid business website or product</li>
+        </ul>
+      </div>
+      <div class="elig-card">
+        <h3><i class="fa-solid fa-hand-holding-dollar"></i> Funding Stage</h3>
+        <ul class="elig-list">
+          <li><strong>Activate Standard:</strong> Any stage (bootstrapped OK)</li>
+          <li><strong>Activate Pro:</strong> Seed or higher, associated with a VC/accelerator</li>
+          <li><strong>Growth Credits:</strong> Series A+</li>
+          <li><strong>Migrate Credits:</strong> Any funded stage</li>
+        </ul>
+      </div>
+      <div class="elig-card">
+        <h3><i class="fa-solid fa-laptop-code"></i> Technical Requirements</h3>
+        <ul class="elig-list">
+          <li>Active AWS account (or create one when you apply)</li>
+          <li>Plan to use AWS for your primary workload</li>
+          <li>No minimum current AWS spend</li>
+          <li>Credits work with any AWS service</li>
+        </ul>
+      </div>
+      <div class="elig-card">
+        <h3><i class="fa-solid fa-clock"></i> What to Expect</h3>
+        <ul class="elig-list">
+          <li>Application takes under 5 minutes</li>
+          <li>Most approvals are instant (Activate Standard)</li>
+          <li>Pro/Growth programs: response within 24 hours</li>
+          <li>Credits activated same day upon approval</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section-alt" id="faq">
+    <div class="section">
+      <div class="sec-header">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Do I need to talk to an AWS sales rep?<i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">No. The entire process is self-service. You apply online, get approved automatically (for most programs), and credits are applied to your account — all without speaking to anyone.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">How long do the credits last?<i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">Activate Standard credits are valid for 12 months. Activate Pro and Growth Credits are valid for 24 months. Migrate Credits are valid for 12 months from activation.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I apply to multiple programs?<i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">You can apply to one Activate program (Standard or Pro) plus one additional program (Growth or Migrate) if you meet the eligibility requirements for each.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What AWS services do credits cover?<i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">Credits apply to most AWS services including EC2, S3, Lambda, RDS, Bedrock, SageMaker, and more. Some exclusions apply (e.g., AWS Marketplace purchases, Route 53 domain registration).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What happens when my credits run out?<i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">You'll be billed at standard AWS pay-as-you-go rates for any usage beyond your credit balance. We'll notify you when your credits are running low so there are no surprises.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">I was rejected. Can I reapply?<i class="fa-solid fa-chevron-down"></i></div>
+          <div class="faq-a">Yes. If your situation has changed (e.g., you've received funding, launched your product), you can reapply after 90 days. You'll be told why you were not approved so you know what to address.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Footer -->
+  <div class="cta-footer">
+    <h2>Ready to get started?</h2>
+    <p>Join 50,000+ startups already building on AWS. Apply in under 5 minutes, get credits instantly, and start scaling your idea today.</p>
+    <button class="btn btn-primary" onclick="scrollTo('programs')"><i class="fa-solid fa-rocket"></i> Apply for Credits</button>
+  </div>
+</div>
+
+<!-- ===== ADMIN VIEW ===== -->
+<div id="view-admin" class="view">
+  <div class="admin-bar">
+    <h2><i class="fa-solid fa-gauge-high"></i> CreditFlow Admin — Internal Only</h2>
+    <div class="live-ind"><div class="live-dot"></div> Live Data</div>
+  </div>
+
+  <div class="admin-kpis">
+    <div class="kpi"><div class="kpi-label">Applications (MTD)</div><div class="kpi-val">1,847</div><div class="kpi-delta up">↑ 18% vs last month</div></div>
+    <div class="kpi"><div class="kpi-label">Auto-Approved</div><div class="kpi-val" style="color:var(--aws-green)">72%</div><div class="kpi-delta up">↑ 4pp improvement</div></div>
+    <div class="kpi"><div class="kpi-label">Avg. Processing</div><div class="kpi-val">4.2m</div><div class="kpi-delta up">↓ 87% vs manual</div></div>
+    <div class="kpi"><div class="kpi-label">Credits Disbursed</div><div class="kpi-val">$2.4M</div><div class="kpi-delta neutral">On budget</div></div>
+    <div class="kpi"><div class="kpi-label">Credit → Paid</div><div class="kpi-val" style="color:var(--aws-orange)">34%</div><div class="kpi-delta up">↑ 6pp vs prior qtr</div></div>
+  </div>
+
+  <div class="admin-content">
+    <div>
+      <div class="a-panel">
+        <h3>Daily Volume &amp; Auto-Approval Rate</h3>
+        <div id="chart-admin" style="height:250px;"></div>
+      </div>
+      <div class="a-panel" style="margin-top:16px;">
+        <h3>Credits by Program</h3>
+        <div id="chart-pie" style="height:250px;"></div>
+      </div>
+    </div>
+    <div>
+      <div class="a-panel">
+        <h3>Review Queue</h3>
+        <div class="q-row"><div class="q-left"><div class="q-av" style="background:#0052cc">NS</div><div><div class="q-name">NovaSpark AI</div><div class="q-sub">Activate Pro • Series A</div></div></div><div style="text-align:right"><div class="q-amt">$12,000</div><span class="q-badge pen">Pending</span></div></div>
+        <div class="q-row"><div class="q-left"><div class="q-av" style="background:#2ea043">CL</div><div><div class="q-name">CloudLift.io</div><div class="q-sub">Growth • Seed</div></div></div><div style="text-align:right"><div class="q-amt">$8,500</div><span class="q-badge auto">Auto</span></div></div>
+        <div class="q-row"><div class="q-left"><div class="q-av" style="background:#6554c0">DX</div><div><div class="q-name">DataXcel</div><div class="q-sub">Migrate • Series B</div></div></div><div style="text-align:right"><div class="q-amt">$14,800</div><span class="q-badge pen">Pending</span></div></div>
+        <div class="q-row"><div class="q-left"><div class="q-av" style="background:#ff991f">FP</div><div><div class="q-name">FinPulse</div><div class="q-sub">Activate Std • Pre-Seed</div></div></div><div style="text-align:right"><div class="q-amt">$3,000</div><span class="q-badge app">Approved</span></div></div>
+        <div class="q-row"><div class="q-left"><div class="q-av" style="background:#00b8d9">VR</div><div><div class="q-name">VeriRoute</div><div class="q-sub">Growth • Series A</div></div></div><div style="text-align:right"><div class="q-amt">$10,200</div><span class="q-badge pen">Pending</span></div></div>
+      </div>
+      <div class="a-panel" style="margin-top:16px;">
+        <h3>Fraud &amp; Risk Alerts</h3>
+        <div class="alert-row"><div class="alert-ic red"><i class="fa-solid fa-exclamation"></i></div><div><div style="font-size:12px;color:var(--aws-text-sec)">Duplicate entity — same billing as denied applicant</div><div style="font-size:11px;color:var(--aws-text-mut)">2h ago</div></div></div>
+        <div class="alert-row"><div class="alert-ic yel"><i class="fa-solid fa-triangle-exclamation"></i></div><div><div style="font-size:12px;color:var(--aws-text-sec)">100% credit burn in 48 hours</div><div style="font-size:11px;color:var(--aws-text-mut)">5h ago</div></div></div>
+        <div class="alert-row"><div class="alert-ic yel"><i class="fa-solid fa-triangle-exclamation"></i></div><div><div style="font-size:12px;color:var(--aws-text-sec)">VC tier mismatch — not in verified DB</div><div style="font-size:11px;color:var(--aws-text-mut)">8h ago</div></div></div>
+      </div>
+      <div class="a-panel" style="margin-top:16px;">
+        <h3>Conversion &amp; ROI</h3>
+        <div class="conv-row">
+          <div class="conv-box"><div class="conv-val green">34%</div><div class="conv-lbl">Credit → Paid</div></div>
+          <div class="conv-box"><div class="conv-val">$9.4K</div><div class="conv-lbl">Avg ARR</div></div>
+          <div class="conv-box"><div class="conv-val orange">5.3x</div><div class="conv-lbl">Program ROI</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function scrollTo(id) {
+  document.getElementById('view-customer').classList.add('active');
+  document.getElementById('view-admin').classList.remove('active');
+  document.getElementById('admin-toggle-text').textContent = 'Admin Portal';
+  setTimeout(function() { document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+}
+
+var adminOpen = false;
+function toggleAdmin() {
+  adminOpen = !adminOpen;
+  document.getElementById('view-customer').classList.toggle('active', !adminOpen);
+  document.getElementById('view-admin').classList.toggle('active', adminOpen);
+  document.getElementById('admin-toggle-text').textContent = adminOpen ? 'Customer View' : 'Admin Portal';
+  if (adminOpen) renderAdminCharts();
+}
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+var chartsRendered = false;
+function renderAdminCharts() {
+  if (chartsRendered) return;
+  chartsRendered = true;
+
+  var days = [];
+  for (var i = 1; i <= 21; i++) days.push('Jul ' + i);
+  var vols = [62,78,85,91,74,45,48,88,95,102,87,93,110,52,55,105,112,98,108,115,89];
+  var rates = [68,70,72,71,73,75,72,74,73,75,74,72,76,74,73,75,74,73,76,75,74];
+
+  Highcharts.chart('chart-admin', {
+    chart: { backgroundColor: 'transparent', height: 250 },
+    title: { text: null },
+    xAxis: { categories: days, labels: { step: 4, style: { fontSize: '10px', color: '#8899a6' } }, lineColor: '#3a4f63', tickColor: '#3a4f63' },
+    yAxis: [{ title: { text: null }, labels: { style: { color: '#8899a6' } }, gridLineColor: '#2a3d52' }, { title: { text: null }, opposite: true, max: 100, labels: { format: '{value}%', style: { color: '#8899a6' } }, gridLineColor: '#2a3d52' }],
+    series: [
+      { name: 'Applications', type: 'areaspline', data: vols, color: '#ff9900', fillColor: { linearGradient: {x1:0,y1:0,x2:0,y2:1}, stops: [[0,'#ff990020'],[1,'#ff990005']] } },
+      { name: 'Auto-Approval %', type: 'spline', yAxis: 1, data: rates, color: '#2ea043', dashStyle: 'ShortDash' }
+    ],
+    legend: { itemStyle: { fontSize: '11px', color: '#8899a6' } },
+    credits: { enabled: false }
+  });
+
+  Highcharts.chart('chart-pie', {
+    chart: { type: 'pie', backgroundColor: 'transparent', height: 250 },
+    title: { text: null },
+    plotOptions: { pie: { innerSize: '50%', borderRadius: 4, borderColor: '#1e2f42', dataLabels: { format: '{point.name}: {point.percentage:.0f}%', style: { fontSize: '11px', color: '#d5dbdb', textOutline: 'none' } } } },
+    series: [{ data: [
+      { name: 'Activate Std', y: 38, color: '#ff9900' },
+      { name: 'Activate Pro', y: 24, color: '#4da6ff' },
+      { name: 'Growth', y: 18, color: '#2ea043' },
+      { name: 'Migrate', y: 12, color: '#8c4fff' },
+      { name: 'POC', y: 8, color: '#00b8d9' }
+    ]}],
+    credits: { enabled: false }
+  });
+}
+</script>
+
+
+</body></html>
