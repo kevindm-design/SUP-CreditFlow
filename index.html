@@ -1,727 +1,274 @@
-
-# Windows Kiro Setup Script with Gandalf MCP
-# This script automates the installation process for Kiro and Gandalf MCP
-# Last Updated: 12/17/2025
-
-<#
-.SYNOPSIS
-    Automated setup script for Kiro and Gandalf MCP on Windows
-.DESCRIPTION
-    This script automates the installation and configuration of Kiro (Amazon's AI IDE),
-    and Gandalf MCP Server for enhanced Excel/Word capabilities.
-.NOTES
-    Prerequisites: 
-    - US Exports form completed (4 hour wait for propagation)
-    - Required permissions granted by manager (4 hour wait for propagation)
-    - Amazon internal network access with valid Midway authentication
-#>
-
-# Requires PowerShell 5.1 or higher
-#Requires -Version 5.1
-
-# Set error action preference
-$ErrorActionPreference = "Stop"
-
-# Script configuration
-$script:LogFile = "$env:USERPROFILE\Desktop\Kiro-Setup-Log.txt"
-
-# Color-coded output functions
-function Write-Header {
-    param([string]$Message)
-    Write-Host "`n========================================" -ForegroundColor Cyan
-    Write-Host $Message -ForegroundColor Cyan
-    Write-Host "========================================`n" -ForegroundColor Cyan
-    Add-Content -Path $script:LogFile -Value "`n[$(Get-Date)] $Message"
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Startup Credits — Self-Service Portal</title>
+<meta name="description" content="Get AWS credits to build your startup instantly. Apply in minutes, no sales rep required.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@12.1.2/modules/accessibility.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --aws-squid: #232f3e;
+  --aws-dark: #0f1b2d;
+  --aws-navy: #1b2a3e;
+  --aws-slate: #243447;
+  --aws-orange: #ff9900;
+  --aws-orange-lt: #ffad33;
+  --aws-teal: #00a1c9;
+  --aws-green: #2ea043;
+  --aws-purple: #8c4fff;
+  --aws-text: #f2f3f3;
+  --aws-text-sec: #d5dbdb;
+  --aws-text-mut: #8899a6;
+  --aws-border: #3a4f63;
+  --aws-card: #1e2f42;
+  --aws-card-hover: #253a50;
+  --font: "Amazon Ember", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
-
-function Write-Success {
-    param([string]$Message)
-    Write-Host "[SUCCESS] $Message" -ForegroundColor Green
-    Add-Content -Path $script:LogFile -Value "[SUCCESS] $Message"
+body { font-family: var(--font); background: var(--aws-dark); color: var(--aws-text); }
+.topbar { background: #0a1120; padding: 12px 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--aws-border); }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.topbar-logo .aws { color: var(--aws-orange); font-size: 20px; }
+.topbar-links { display: flex; gap: 24px; }
+.topbar-links a { color: var(--aws-text-sec); font-size: 13px; text-decoration: none; transition: color 0.15s; cursor: pointer; }
+.topbar-links a:hover { color: #fff; }
+.topbar-cta { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: var(--aws-orange); color: var(--aws-dark); text-decoration: none; }
+.topbar-cta:hover { background: var(--aws-orange-lt); }
+.admin-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 999; background: var(--aws-orange); color: var(--aws-dark); padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px; }
+.admin-toggle:hover { background: var(--aws-orange-lt); }
+.view { display: none; }
+.view.active { display: block; }
+.hero { padding: 80px 48px 72px; background: linear-gradient(160deg, #0a1120 0%, #1b2a3e 50%, #162438 100%); text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -40%; right: -10%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,153,0,0.06), transparent 65%); border-radius: 50%; }
+.hero::after { content: ''; position: absolute; bottom: -40%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,161,201,0.04), transparent 65%); border-radius: 50%; }
+.hero-tag { display: inline-block; background: rgba(255,153,0,0.12); color: var(--aws-orange); font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 12px; margin-bottom: 20px; letter-spacing: 0.03em; }
+.hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 18px; line-height: 1.12; max-width: 780px; margin-left: auto; margin-right: auto; position: relative; color: #fff; }
+.hero h1 .hl { color: var(--aws-orange); }
+.hero p { font-size: 18px; color: var(--aws-text-sec); max-width: 620px; margin: 0 auto 12px; line-height: 1.6; }
+.hero-credit-highlight { font-size: 20px; font-weight: 700; color: var(--aws-orange); margin-bottom: 36px; }
+.hero-btns { display: flex; gap: 12px; justify-content: center; margin-bottom: 52px; }
+.btn { padding: 13px 30px; border-radius: 22px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+.btn-primary { background: var(--aws-orange); color: var(--aws-dark); }
+.btn-primary:hover { background: var(--aws-orange-lt); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: #fff; border: 1px solid var(--aws-border); }
+.btn-ghost:hover { border-color: var(--aws-orange); color: var(--aws-orange); }
+.hero-trust { display: flex; justify-content: center; gap: 56px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.06); }
+.trust-item { text-align: center; }
+.trust-val { font-size: 32px; font-weight: 700; color: var(--aws-orange); }
+.trust-lbl { font-size: 12px; color: var(--aws-text-mut); margin-top: 2px; }
+.section { padding: 72px 48px; max-width: 1200px; margin: 0 auto; }
+.section-alt { background: var(--aws-navy); }
+.sec-header { text-align: center; margin-bottom: 44px; }
+.sec-header h2 { font-size: 32px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+.sec-header p { font-size: 15px; color: var(--aws-text-sec); max-width: 600px; margin: 0 auto; }
+.programs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+.prog-card { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 12px; padding: 28px; transition: all 0.2s; position: relative; overflow: hidden; }
+.prog-card:hover { border-color: var(--aws-orange); background: var(--aws-card-hover); box-shadow: 0 8px 32px rgba(255,153,0,0.06); transform: translateY(-2px); }
+.prog-card.popular::before { content: 'MOST POPULAR'; position: absolute; top: 12px; right: -28px; background: var(--aws-orange); color: var(--aws-dark); font-size: 9px; font-weight: 700; padding: 3px 32px; transform: rotate(45deg); letter-spacing: 0.05em; }
+.prog-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+.prog-icon.orange { background: rgba(255,153,0,0.12); color: var(--aws-orange); }
+.prog-icon.teal { background: rgba(0,161,201,0.12); color: var(--aws-teal); }
+.prog-icon.purple { background: rgba(140,79,255,0.12); color: var(--aws-purple); }
+.prog-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+.prog-tagline { font-size: 13px; color: var(--aws-text-mut); margin-bottom: 16px; }
+.prog-features { list-style: none; margin-top: 8px; }
+.prog-features li { font-size: 13px; color: var(--aws-text-sec); padding: 5px 0; display: flex; align-items: center; gap: 8px; }
+.prog-features li i { color: var(--aws-green); font-size: 12px; }
+.prog-btn { display: block; width: 100%; text-align: center; padding: 11px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 20px; border: none; background: var(--aws-orange); color: var(--aws-dark); transition: all 0.15s; text-decoration: none; }
+.prog-btn:hover { background: var(--aws-orange-lt); }
+.prog-btn.outline { background: transparent; border: 1px solid var(--aws-border); color: var(--aws-text-sec); }
+.prog-btn.outline:hover { border-color: var(--aws-orange); color: var(--aws-orange); }
+.steps { display: flex; gap: 0; max-width: 1000px; margin: 0 auto; }
+.step { flex: 1; text-align: center; padding: 32px 16px; background: var(--aws-card); border: 1px solid var(--aws-border); position: relative; }
+.step:first-child { border-radius: 12px 0 0 12px; }
+.step:last-child { border-radius: 0 12px 12px 0; }
+.step::after { content: '\2192'; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--aws-orange); z-index: 1; font-weight: 700; }
+.step:last-child::after { display: none; }
+.step-num { display: inline-block; width: 28px; height: 28px; line-height: 28px; border-radius: 50%; background: var(--aws-orange); color: var(--aws-dark); font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+.step-icon { font-size: 28px; color: var(--aws-text-sec); margin-bottom: 10px; }
+.step-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: #fff; }
+.step-desc { font-size: 12px; color: var(--aws-text-mut); line-height: 1.4; }
+.elig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 900px; margin: 0 auto; }
+.elig-card { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 10px; padding: 24px; }
+.elig-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #fff; }
+.elig-card h3 i { color: var(--aws-orange); }
+.elig-list { list-style: none; }
+.elig-list li { font-size: 13px; color: var(--aws-text-sec); padding: 5px 0; padding-left: 18px; position: relative; }
+.elig-list li::before { content: '\2713'; position: absolute; left: 0; color: var(--aws-green); font-weight: 700; font-size: 12px; }
+.faq { max-width: 800px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--aws-border); }
+.faq-q { padding: 18px 0; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #fff; }
+.faq-q i { color: var(--aws-text-mut); transition: transform 0.2s; font-size: 12px; }
+.faq-q.open i { transform: rotate(180deg); }
+.faq-a { padding: 0 0 18px; font-size: 13px; color: var(--aws-text-sec); line-height: 1.6; display: none; }
+.faq-a.open { display: block; }
+.cta-footer { padding: 72px 48px; text-align: center; background: linear-gradient(160deg, #0a1120, #1b2a3e); border-top: 1px solid var(--aws-border); }
+.cta-footer h2 { font-size: 30px; font-weight: 700; margin-bottom: 12px; color: #fff; }
+.cta-footer p { color: var(--aws-text-mut); max-width: 560px; margin: 0 auto 28px; font-size: 15px; line-height: 1.5; }
+.cta-footer .aws-link { display: inline-flex; align-items: center; gap: 6px; color: var(--aws-orange); font-size: 14px; font-weight: 500; text-decoration: none; margin-top: 16px; transition: opacity 0.15s; }
+.cta-footer .aws-link:hover { opacity: 0.8; text-decoration: underline; }
+.admin-bar { background: var(--aws-navy); padding: 16px 48px; border-bottom: 1px solid var(--aws-border); display: flex; justify-content: space-between; align-items: center; }
+.admin-bar h2 { font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #fff; }
+.admin-bar h2 i { color: var(--aws-orange); }
+.live-ind { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--aws-green); font-weight: 600; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--aws-green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+.admin-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 20px 48px; }
+.kpi { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 8px; padding: 16px; }
+.kpi-label { font-size: 10px; color: var(--aws-text-mut); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+.kpi-val { font-size: 24px; font-weight: 700; font-family: monospace; margin-top: 6px; color: #fff; }
+.kpi-delta { font-size: 11px; margin-top: 3px; }
+.kpi-delta.up { color: var(--aws-green); }
+.kpi-delta.neutral { color: var(--aws-text-mut); }
+.admin-content { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; padding: 0 48px 32px; }
+.a-panel { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 8px; padding: 20px; }
+.a-panel h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--aws-text-mut); margin-bottom: 14px; }
+.q-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--aws-border); }
+.q-row:last-child { border: none; }
+.q-left { display: flex; align-items: center; gap: 10px; }
+.q-av { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+.q-name { font-size: 13px; font-weight: 500; color: #fff; }
+.q-sub { font-size: 11px; color: var(--aws-text-mut); }
+.q-amt { font-size: 13px; font-weight: 600; font-family: monospace; color: #fff; }
+.q-badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.q-badge.pen { background: rgba(255,153,0,0.15); color: var(--aws-orange); }
+.q-badge.app { background: rgba(46,160,67,0.15); color: var(--aws-green); }
+.q-badge.auto { background: rgba(0,82,204,0.15); color: #4da6ff; }
+.q-edit-btn { background: transparent; border: 1px solid var(--aws-border); color: var(--aws-text-sec); padding: 3px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; margin-left: 8px; transition: all 0.15s; }
+.q-edit-btn:hover { border-color: var(--aws-orange); color: var(--aws-orange); }
+.alert-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--aws-border); }
+.alert-row:last-child { border: none; }
+.alert-ic { width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+.alert-ic.red { background: rgba(209,50,18,0.15); color: #ff6b4a; }
+.alert-ic.yel { background: rgba(255,153,0,0.15); color: var(--aws-orange); }
+.conv-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.conv-box { text-align: center; padding: 12px; background: var(--aws-navy); border-radius: 6px; }
+.conv-val { font-size: 20px; font-weight: 700; font-family: monospace; color: #fff; }
+.conv-val.green { color: var(--aws-green); }
+.conv-val.orange { color: var(--aws-orange); }
+.conv-lbl { font-size: 10px; color: var(--aws-text-mut); text-transform: uppercase; margin-top: 3px; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--aws-card); border: 1px solid var(--aws-border); border-radius: 12px; padding: 28px; width: 480px; max-width: 90%; max-height: 80vh; overflow-y: auto; }
+.modal h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.modal h3 i { color: var(--aws-orange); }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 11px; color: var(--aws-text-mut); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; margin-bottom: 6px; }
+.form-input { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--aws-border); background: var(--aws-navy); color: var(--aws-text); font-size: 13px; font-family: var(--font); }
+.form-input:focus { outline: none; border-color: var(--aws-orange); }
+.form-select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--aws-border); background: var(--aws-navy); color: var(--aws-text); font-size: 13px; appearance: auto; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-btn { padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+.modal-btn.primary { background: var(--aws-orange); color: var(--aws-dark); }
+.modal-btn.primary:hover { background: var(--aws-orange-lt); }
+.modal-btn.secondary { background: transparent; border: 1px solid var(--aws-border); color: var(--aws-text-sec); }
+.modal-btn.secondary:hover { border-color: var(--aws-text-sec); }
+.history-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--aws-border); }
+.history-item:last-child { border: none; }
+.history-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--aws-orange); margin-top: 5px; flex-shrink: 0; }
+.history-dot.green { background: var(--aws-green); }
+.history-dot.blue { background: #4da6ff; }
+.history-text { font-size: 12px; color: var(--aws-text-sec); }
+.history-text strong { color: #fff; }
+.history-time { font-size: 10px; color: var(--aws-text-mut); margin-top: 2px; }
+@media (max-width: 900px) {
+  .topbar { padding: 12px 20px; }
+  .topbar-links { display: none; }
+  .programs { grid-template-columns: 1fr; }
+  .steps { flex-direction: column; }
+  .step { border-radius: 0 !important; }
+  .step::after { display: none !important; }
+  .elig-grid { grid-template-columns: 1fr; }
+  .admin-kpis { grid-template-columns: repeat(2, 1fr); }
+  .admin-content { grid-template-columns: 1fr; }
+  .hero { padding: 48px 20px; }
+  .hero h1 { font-size: 32px; }
+  .hero-trust { flex-wrap: wrap; gap: 24px; }
+  .section { padding: 48px 20px; }
+  .cta-footer { padding: 48px 20px; }
 }
-
-function Write-Warning-Custom {
-    param([string]$Message)
-    Write-Host "[WARNING] $Message" -ForegroundColor Yellow
-    Add-Content -Path $script:LogFile -Value "[WARNING] $Message"
-}
-
-function Write-Error-Custom {
-    param([string]$Message)
-    Write-Host "[ERROR] $Message" -ForegroundColor Red
-    Add-Content -Path $script:LogFile -Value "[ERROR] $Message"
-}
-
-function Write-Info {
-    param([string]$Message)
-    Write-Host "[INFO] $Message" -ForegroundColor White
-    Add-Content -Path $script:LogFile -Value "[INFO] $Message"
-}
-
-function Write-Action {
-    param([string]$Message)
-    Write-Host "[ACTION] $Message" -ForegroundColor Magenta
-    Add-Content -Path $script:LogFile -Value "[ACTION] $Message"
-}
-
-# Initialize log file
-function Initialize-Log {
-    $logHeader = @"
-========================================
-Kiro Setup Log
-Started: $(Get-Date)
-========================================
-"@
-    Set-Content -Path $script:LogFile -Value $logHeader
-    Write-Info "Log file created at: $script:LogFile"
-}
-
-# Display menu and get user choice
-function Show-Menu {
-    Clear-Host
-    Write-Host @"
-========================================================================
-        Windows Kiro Setup with Gandalf MCP
-                    Installation Menu
-========================================================================
-
-"@ -ForegroundColor Cyan
-    
-    Write-Host "Please select what you would like to do:" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "  1. Full Installation (Recommended for new users)"
-    Write-Host "     - Install Kiro and Gandalf MCP"
-    Write-Host ""
-    Write-Host "  2. Install Gandalf Only"
-    Write-Host "     - For users who already have Kiro installed"
-    Write-Host ""
-    Write-Host "  3. Install Excel Theme Only"
-    Write-Host "     - Add Excel-inspired theme to existing Kiro installation"
-    Write-Host ""
-    Write-Host "  4. Run Daily Midway Setup"
-    Write-Host "     - Execute mwinit authentication and view troubleshooting tips"
-    Write-Host ""
-    Write-Host "  5. Exit"
-    Write-Host ""
-    
-    $choice = Read-Host "Enter your choice (1-5)"
-    return $choice
-}
-
-# Configure Midway authentication
-function Configure-Midway {
-    Write-Header "SECTION 1: Midway Authentication"
-    
-   # Check OpenSSH installation
-    Write-Info "Verifying OpenSSH installation..."
-    $sshCommand = Get-Command ssh -ErrorAction SilentlyContinue
-    
-    if ($sshCommand) {
-        # Get version info (ssh -V outputs to stderr, so capture it)
-        $sshVersion = (cmd /c "ssh -V 2>&1")
-        Write-Success "OpenSSH is installed: $sshVersion"
-    }
-    else {
-        Write-Error-Custom "OpenSSH is not installed or not in PATH"
-        Write-Info "Please ensure OpenSSH is installed on your system"
-        throw "OpenSSH not found"
-    }
-    
-    # Check if SSH key already exists
-    $sshKeyPath = "$env:USERPROFILE\.ssh\id_ecdsa"
-    $sshKeyExists = Test-Path $sshKeyPath
-    
-    if ($sshKeyExists) {
-        Write-Success "SSH key already exists at: $sshKeyPath"
-        $response = Read-Host "Do you want to regenerate your SSH key? (Y/N)"
-        if ($response -ne 'Y' -and $response -ne 'y') {
-            Write-Info "Using existing SSH key"
-        }
-        else {
-            $sshKeyExists = $false
-        }
-    }
-    
-    if (-not $sshKeyExists) {
-        Write-Action "Generating SSH keypair for Midway authentication..."
-        Write-Info "This SSH key is required for mwinit to create your SSH certificate"
-        
-        try {
-            # Create .ssh directory if it doesn't exist
-            $sshDir = "$env:USERPROFILE\.ssh"
-            if (-not (Test-Path $sshDir)) {
-                New-Item -ItemType Directory -Path $sshDir -Force | Out-Null
-                Write-Info "Created .ssh directory: $sshDir"
-            }
-            
-            # Generate SSH key without passphrase (automated)
-            Write-Info "Generating ECDSA SSH keypair (no passphrase for compatibility)..."
-            $process = Start-Process -FilePath "ssh-keygen" -ArgumentList @(
-                "-t", "ecdsa",
-                "-f", $sshKeyPath,
-                "-N", '""'
-            ) -NoNewWindow -Wait -PassThru
-            
-            if ($process.ExitCode -eq 0) {
-                Write-Success "SSH keypair generated successfully!"
-                Write-Info "Private key: $sshKeyPath"
-                Write-Info "Public key: $sshKeyPath.pub"
-            }
-            else {
-                Write-Error-Custom "SSH key generation failed with exit code: $($process.ExitCode)"
-                throw "SSH key generation failed"
-            }
-        }
-        catch {
-            Write-Error-Custom "Failed to generate SSH keypair: $_"
-            Write-Info "You may need to generate it manually using: ssh-keygen -t ecdsa"
-            throw
-        }
-    }
-    
-    # Run mwinit to authenticate
-    Write-Action "Running Midway authentication (mwinit)..."
-    Write-Warning-Custom "You will be prompted to enter your password"
-    Write-Warning-Custom "Note: When entering your password, you won't see it on screen - this is normal for security"
-    Write-Host ""
-    
-    try {
-        # Check if mwinit is available
-        $mwinitCmd = Get-Command mwinit -ErrorAction SilentlyContinue
-        if (-not $mwinitCmd) {
-            Write-Error-Custom "mwinit command not found"
-            Write-Info "Please ensure you have completed the prerequisites and mwinit is installed"
-            throw "mwinit not available"
-        }
-        
-        Write-Info "Running: mwinit -o -s"
-        Write-Host "Please follow the authentication prompts below:" -ForegroundColor Yellow
-        Write-Host ""
-        
-        # Run mwinit interactively with -o (non-interactive) and -s (short-lived cert) flags
-        & mwinit -o -s
-        
-        if ($LASTEXITCODE -eq 0) {
-            Write-Success "Midway authentication completed successfully!"
-            Write-Info "Your Midway session is valid for 24 hours"
-        }
-        else {
-            Write-Warning-Custom "mwinit exited with code: $LASTEXITCODE"
-            $response = Read-Host "`nDid mwinit complete successfully? (Y/N)"
-            if ($response -ne 'Y' -and $response -ne 'y') {
-                Write-Error-Custom "Midway authentication failed"
-                throw "mwinit authentication failed"
-            }
-        }
-    }
-    catch {
-        Write-Error-Custom "Midway authentication error: $_"
-        Write-Info "You may need to run 'mwinit' manually and then restart this script"
-        throw
-    }
-    
-    Write-Success "Midway authentication completed!"
-}
-
-# Install Kiro
-function Install-Kiro {
-    Write-Header "SECTION 2: Installing Kiro"
-    
-    Write-Info "Kiro is Amazon's AI-powered IDE"
-    
-    # Step 1: Check and install Toolbox
-    Write-Action "Checking for Toolbox installation..."
-    $toolboxCmd = Get-Command toolbox -ErrorAction SilentlyContinue
-    
-    if (-not $toolboxCmd) {
-        Write-Action "Toolbox not found, installing..."
-        
-        try {
-            $bootstrapPath = "toolbox-bootstrap.cmd"
-            $nonce = Get-Random
-            
-            # Download bootstrap using embedded authentication
-            curl.exe --ssl-no-revoke -X POST `
-              --data '{\"os\":\"windows\"}' `
-              -H "Content-Type: application/json" `
-              -H "Authorization: $(curl.exe --ssl-no-revoke -L `
-              --cookie $Env:USERPROFILE\.midway\cookie `
-              --cookie-jar $Env:USERPROFILE\.midway\cookie `
-              $('https://midway-auth.amazon.com/SSO?client_id=https://us-east-1.prod.release-service.toolbox.builder-tools.aws.dev&response_type=id_token&nonce='+$nonce+'&redirect_uri=https://us-east-1.prod.release-service.toolbox.builder-tools.aws.dev:443'))" `
-              https://us-east-1.prod.release-service.toolbox.builder-tools.aws.dev/v1/bootstrap `
-              -o $bootstrapPath
-            
-            if (Test-Path $bootstrapPath) {
-                Write-Success "Toolbox bootstrap downloaded"
-                
-                # Run bootstrap
-                Write-Action "Running Toolbox installation..."
-                & .\$bootstrapPath
-                
-                # Add to PATH
-                Write-Action "Adding Toolbox to PATH..."
-                $path = [Environment]::GetEnvironmentVariable('PATH', 'User')
-                $toolboxPath = "$env:LOCALAPPDATA\Toolbox\bin"
-                if ($path -notlike "*$toolboxPath*") {
-                    [Environment]::SetEnvironmentVariable('PATH', $path.TrimEnd(";") + ";$toolboxPath", 'User')
-                    $env:PATH = $env:PATH + ";$toolboxPath"
-                }
-                
-                # Clean up bootstrap
-                Remove-Item $bootstrapPath -Force -ErrorAction SilentlyContinue
-                
-                Write-Success "Toolbox installed successfully"
-            }
-            else {
-                throw "Bootstrap download failed"
-            }
-        }
-        catch {
-            Write-Error-Custom "Toolbox installation failed: $_"
-            Write-Info "You may need to install Toolbox manually"
-            throw
-        }
-    }
-    else {
-        Write-Success "Toolbox is already installed"
-    }
-    
-    # Step 2: Install axe
-    Write-Action "Installing axe via Toolbox..."
-    try {
-        & toolbox install axe --force
-        Write-Success "Axe installed successfully!"
-    }
-    catch {
-        Write-Warning-Custom "Axe may already be installed or installation failed: $_"
-        Write-Info "Continuing with Kiro initialization..."
-    }
-    
-    # Step 3: Initialize Kiro
-    Write-Action "Initializing Kiro..."
-    try {
-        $axeCmd = Get-Command axe -ErrorAction SilentlyContinue
-        if (-not $axeCmd) {
-            # Refresh PATH
-            $env:PATH = [Environment]::GetEnvironmentVariable('PATH', 'User') + ";" + [Environment]::GetEnvironmentVariable('PATH', 'Machine')
-            $axeCmd = Get-Command axe -ErrorAction SilentlyContinue
-        }
-        
-        if ($axeCmd) {
-            Write-Info "Running: axe init kiro"
-            & axe init kiro
-            Write-Success "Kiro initialized successfully!"
-            Write-Info "Kiro is now ready to use"
-        }
-        else {
-            Write-Error-Custom "axe command not found after installation"
-            Write-Info "You may need to restart PowerShell and run 'axe init kiro' manually"
-        }
-    }
-    catch {
-        Write-Warning-Custom "Kiro initialization encountered an issue: $_"
-        Write-Info "If axe is installed, try running 'axe init kiro' manually"
-    }
-    
-    Write-Success "Kiro installation completed!"
-}
-
-# Install Gandalf MCP Server
-function Install-GandalfMCP {
-    Write-Header "SECTION 3: Installing Gandalf MCP Server"
-    
-    Write-Info "Gandalf MCP allows Kiro to interact with Excel and Word files"
-    
-    # Check and install Toolbox if needed
-    $toolboxCmd = Get-Command toolbox -ErrorAction SilentlyContinue
-    if (-not $toolboxCmd) {
-        Write-Error-Custom "Toolbox is required but not found"
-        Write-Info "Please run Full Installation (Option 1) first"
-        throw "Toolbox not available"
-    }
-    
-    # Check if gandalf-mcp-server is already installed
-    Write-Action "Checking for existing Gandalf installation..."
-    $gandalfCmd = Get-Command gandalf-mcp-server -ErrorAction SilentlyContinue
-    
-    if ($gandalfCmd -and $gandalfCmd.Source -match "Toolbox") {
-        Write-Success "Gandalf MCP Server is already installed from Toolbox"
-    }
-    else {
-        # Register DSDI Teams Toolbox Repository
-        Write-Action "Registering DSDI Teams Toolbox repository..."
-        try {
-            & toolbox registry add s3://buildertoolbox-registry-dsditool-registry-us-west-2/tools.json 2>&1 | Out-Null
-            Write-Success "DSDI registry added"
-        }
-        catch {
-            Write-Info "Registry may already be added"
-        }
-        
-        # Install Gandalf MCP Server
-        Write-Action "Installing Gandalf MCP Server via Toolbox..."
-        try {
-            & toolbox install gandalf-mcp-server --force
-            Write-Success "Gandalf MCP Server installed successfully!"
-            
-            # Install Gandalf Aide MCP Server
-            Write-Action "Installing Gandalf Aide MCP Server via Toolbox..."
-            & toolbox install gandalf-aide-mcp-server --force
-            Write-Success "Gandalf Aide MCP Server installed successfully!"
-        }
-        catch {
-            Write-Error-Custom "Gandalf installation failed: $_"
-            throw
-        }
-    }
-    
-    # Configure Kiro MCP Settings
-    Write-Action "Configuring Gandalf in Kiro MCP settings..."
-    
-    $mcpSettingsPath = "$env:USERPROFILE\.kiro\settings\mcp.json"
-    
-    try {
-        # Create directory if it doesn't exist
-        $mcpSettingsDir = Split-Path $mcpSettingsPath -Parent
-        if (-not (Test-Path $mcpSettingsDir)) {
-            New-Item -ItemType Directory -Path $mcpSettingsDir -Force | Out-Null
-            Write-Info "Created Kiro settings directory: $mcpSettingsDir"
-        }
-        
-        # Initialize settings object
-        $mcpSettings = $null
-        
-        # Read existing settings file if it exists
-        if (Test-Path $mcpSettingsPath) {
-            try {
-                $content = Get-Content $mcpSettingsPath -Raw
-                if ($content -and $content.Trim()) {
-                    $mcpSettings = $content | ConvertFrom-Json
-                    Write-Info "Existing MCP settings found"
-                }
-            }
-            catch {
-                Write-Warning-Custom "Could not parse existing settings file, creating new one"
-                $mcpSettings = $null
-            }
-        }
-        
-        # Create new settings structure if needed
-        if (-not $mcpSettings) {
-            $mcpSettings = New-Object PSObject
-            $mcpSettings | Add-Member -MemberType NoteProperty -Name "mcpServers" -Value (New-Object PSObject)
-            Write-Info "Creating new MCP settings file"
-        }
-        
-        # Ensure mcpServers property exists
-        if (-not ($mcpSettings.PSObject.Properties.Name -contains "mcpServers")) {
-            $mcpSettings | Add-Member -MemberType NoteProperty -Name "mcpServers" -Value (New-Object PSObject) -Force
-        }
-        
-        # Check if Gandalf is already configured
-        if ($mcpSettings.mcpServers.PSObject.Properties.Name -contains "gandalf") {
-            Write-Success "Gandalf MCP Server is already configured in Kiro"
-        }
-        else {
-            # Add Gandalf configuration for Kiro
-            $gandalfConfig = New-Object PSObject
-            $gandalfConfig | Add-Member -MemberType NoteProperty -Name "disabled" -Value $false
-            $gandalfConfig | Add-Member -MemberType NoteProperty -Name "timeout" -Value 300
-            $gandalfConfig | Add-Member -MemberType NoteProperty -Name "type" -Value "stdio"
-            $gandalfConfig | Add-Member -MemberType NoteProperty -Name "command" -Value "gandalf-mcp-server"
-            $gandalfConfig | Add-Member -MemberType NoteProperty -Name "args" -Value @()
-            
-            $envConfig = New-Object PSObject
-            $envConfig | Add-Member -MemberType NoteProperty -Name "PORT" -Value "8001"
-            $envConfig | Add-Member -MemberType NoteProperty -Name "OFFICE_MCP_SESSION_TTL" -Value "3600"
-            $envConfig | Add-Member -MemberType NoteProperty -Name "OFFICE_MCP_MAX_OPEN" -Value "8"
-            $envConfig | Add-Member -MemberType NoteProperty -Name "OFFICE_MCP_MAX_EXPIRED_HISTORY" -Value "100"
-            
-            $gandalfConfig | Add-Member -MemberType NoteProperty -Name "env" -Value $envConfig
-            
-            $autoApproveList = @("open_excel_workbook", "list_excel_workbooks", "get_excel_workbook_metadata", "read_excel_data")
-            $gandalfConfig | Add-Member -MemberType NoteProperty -Name "autoApprove" -Value $autoApproveList
-            
-            $mcpSettings.mcpServers | Add-Member -MemberType NoteProperty -Name "gandalf" -Value $gandalfConfig -Force
-            
-            # Add Gandalf Aide configuration
-            $gandalfAideConfig = New-Object PSObject
-            $gandalfAideConfig | Add-Member -MemberType NoteProperty -Name "disabled" -Value $false
-            $gandalfAideConfig | Add-Member -MemberType NoteProperty -Name "timeout" -Value 600
-            $gandalfAideConfig | Add-Member -MemberType NoteProperty -Name "type" -Value "stdio"
-            $gandalfAideConfig | Add-Member -MemberType NoteProperty -Name "command" -Value "gandalf-aide-mcp-server"
-            $gandalfAideConfig | Add-Member -MemberType NoteProperty -Name "args" -Value @()
-            $gandalfAideConfig | Add-Member -MemberType NoteProperty -Name "autoApprove" -Value @("list_tools")
-            
-            $mcpSettings.mcpServers | Add-Member -MemberType NoteProperty -Name "gandalf-aide" -Value $gandalfAideConfig -Force
-            
-            # Save configuration
-            $jsonSettings = $mcpSettings | ConvertTo-Json -Depth 10
-            Set-Content -Path $mcpSettingsPath -Value $jsonSettings -Force
-            Write-Success "Gandalf and Gandalf Aide MCP Servers configured in Kiro"
-            Write-Info "Configuration saved to: $mcpSettingsPath"
-        }
-    }
-    catch {
-        Write-Error-Custom "Failed to configure Gandalf in Kiro: $_"
-        Write-Info "You may need to configure manually"
-        throw
-    }
-    
-    Write-Success "Gandalf MCP Server installation and configuration completed!"
-}
-
-# Install Excel Theme (Optional)
-function Install-ExcelTheme {
-    Write-Header "Excel Theme (Optional)"
-    
-    $response = Read-Host "Do you want to enable the Excel theme for Kiro? (Y/N)"
-    if ($response -ne 'Y' -and $response -ne 'y') {
-        Write-Info "Skipping Excel theme installation"
-        return
-    }
-    
-    Write-Action "Installing Office Theme extension for Kiro..."
-    
-    try {
-        # Try to find kiro command
-        $kiroCmd = "kiro"
-        $kiroFound = Get-Command kiro -ErrorAction SilentlyContinue
-        
-        # If not found, try the direct path
-        if (-not $kiroFound) {
-            $kiroCmdPath = "$env:LOCALAPPDATA\Programs\Kiro\bin\kiro.cmd"
-            if (Test-Path $kiroCmdPath) {
-                $kiroCmd = $kiroCmdPath
-                Write-Info "Using Kiro from: $kiroCmdPath"
-            }
-            else {
-                Write-Warning-Custom "Kiro command not found"
-                Write-Info "You can manually install Office Theme from Kiro's Extensions marketplace"
-                return
-            }
-        }
-        
-        # Install the extension
-        & $kiroCmd --install-extension huacat.office-theme --force 2>&1 | Out-Null
-        Write-Success "Office Theme extension installed successfully!"
-        Write-Info "The Excel-inspired theme is now available in Kiro"
-        Write-Info "To activate: Go to File > Preferences > Color Theme and select an Office theme"
-    }
-    catch {
-        Write-Warning-Custom "Could not install Office Theme extension: $_"
-        Write-Info "You can manually install it from Kiro's Extensions marketplace"
-        Write-Info "Search for 'Office Theme' by huacat"
-    }
-}
-
-# Daily setup reminder
-function Show-DailySetupReminder {
-    Write-Header "Daily Setup Reminder"
-    
-    Write-Info "Remember: You need to run 'mwinit' EVERY DAY before using Kiro/Gandalf"
-    Write-Host "`nDaily Setup Steps:"
-    Write-Host "  1. Open a terminal (Windows Start -> search 'Terminal')"
-    Write-Host "  2. Run: mwinit -o -s"
-    Write-Host "  3. Follow the authentication prompts"
-    Write-Host "  4. Midway session lasts 24 hours"
-    
-    Write-Warning-Custom "Midway authentication expires after 24 hours!"
-}
-
-# Common issues and troubleshooting
-function Show-TroubleshootingInfo {
-    Write-Header "Common Issues & Troubleshooting"
-    
-    Write-Info "Throttling/429 Errors:"
-    Write-Host "  - You may hit 'traffic jams' when using popular models"
-    Write-Host "  - Solution 1: Switch to a different AWS region"
-    Write-Host "  - Solution 2: Wait a few minutes and try again"
-    Write-Host "  - Solution 3: Use a different model"
-    
-    Write-Info "`nKiro/Axe Issues:"
-    Write-Host "  - If 'axe' command not found, restart PowerShell"
-    Write-Host "  - Run 'toolbox install axe --force' if needed"
-    Write-Host "  - Run 'axe init kiro' manually if initialization failed"
-    
-    Write-Info "`nMidway Issues:"
-    Write-Host "  - Run 'mwinit -o -s' if you see authentication errors"
-    Write-Host "  - Midway must be refreshed daily"
-    
-    Write-Info "`nGet Help:"
-    Write-Host "  - Join Slack channel #gandalf-mcp-interest for support"
-    Write-Host "  - Share error logs from: $script:LogFile"
-}
-
-# Main execution
-function Main {
-    try {
-        # Set PowerShell window to always be on top
-        Add-Type @"
-            using System;
-            using System.Runtime.InteropServices;
-            public class WindowHelper {
-                [DllImport("user32.dll")]
-                public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-                
-                public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
-                public const uint SWP_NOMOVE = 0x0002;
-                public const uint SWP_NOSIZE = 0x0001;
-                public const uint SWP_SHOWWINDOW = 0x0040;
-            }
-"@
-        
-        try {
-            $consolePtr = [System.Diagnostics.Process]::GetCurrentProcess().MainWindowHandle
-            [WindowHelper]::SetWindowPos($consolePtr, [WindowHelper]::HWND_TOPMOST, 0, 0, 0, 0, [WindowHelper]::SWP_NOMOVE -bor [WindowHelper]::SWP_NOSIZE -bor [WindowHelper]::SWP_SHOWWINDOW) | Out-Null
-        }
-        catch {
-            # If setting window on top fails, continue anyway
-        }
-        
-        # Show menu and get user choice
-        $userChoice = Show-Menu
-        
-        # Initialize log
-        Clear-Host
-        Initialize-Log
-        
-        switch ($userChoice) {
-            "1" {
-                # Full Installation
-                Write-Host "Starting Full Kiro Installation..." -ForegroundColor Cyan
-                Write-Host ""
-                
-                Configure-Midway
-                Install-Kiro
-                Install-GandalfMCP
-                Install-ExcelTheme
-                
-                # Pause before showing daily reminders
-                Write-Host ""
-                Read-Host "Press Enter to view daily setup reminders and tips"
-                
-                Show-DailySetupReminder
-                Show-TroubleshootingInfo
-                
-                # Final summary
-                Write-Header "Setup Complete!"
-                Write-Success "All installation steps completed successfully!"
-                Write-Info "Log file saved to: $script:LogFile"
-                Write-Host "`n*** Congratulations! You're ready to use Kiro with Gandalf MCP! ***" -ForegroundColor Green
-                Write-Host "*** To launch Kiro: ***" -ForegroundColor Cyan
-                Write-Host "    - Search 'Kiro' in Windows Start Menu, or" -ForegroundColor Cyan
-                Write-Host "    - Open a terminal and run: kiro" -ForegroundColor Cyan
-            }
-            "2" {
-                # Gandalf Only
-                Write-Host "Installing Gandalf MCP Only..." -ForegroundColor Cyan
-                Write-Host ""
-                
-                # Check for mwinit first
-                $mwinitCmd = Get-Command mwinit -ErrorAction SilentlyContinue
-                if (-not $mwinitCmd) {
-                    Write-Error-Custom "mwinit command not found. Please complete prerequisites first."
-                    throw "mwinit not available"
-                }
-                
-                Install-GandalfMCP
-                
-                Write-Header "Gandalf Installation Complete!"
-                Write-Success "Gandalf MCP has been installed and configured for Kiro"
-                Write-Info "Restart Kiro to see the changes"
-            }
-            "3" {
-                # Excel Theme Only
-                Write-Host "Installing Excel Theme..." -ForegroundColor Cyan
-                Write-Host ""
-                
-                Install-ExcelTheme
-                
-                Write-Header "Theme Installation Complete!"
-                Write-Info "Restart Kiro if the theme doesn't appear immediately"
-            }
-            "4" {
-                # Perform Daily Setup
-                Write-Header "Daily Midway Setup"
-                Write-Info "Running daily Midway authentication..."
-                
-                try {
-                    $mwinitCmd = Get-Command mwinit -ErrorAction SilentlyContinue
-                    if (-not $mwinitCmd) {
-                        Write-Error-Custom "mwinit command not found"
-                        Write-Info "Please ensure mwinit is installed on your system"
-                        throw "mwinit not available"
-                    }
-                    
-                    Write-Action "Running: mwinit -o -s"
-                    Write-Warning-Custom "You will be prompted to enter your password"
-                    Write-Warning-Custom "Note: When entering your password, you won't see it on screen - this is normal"
-                    Write-Host ""
-                    
-                    & mwinit -o -s
-                    
-                    if ($LASTEXITCODE -eq 0) {
-                        Write-Success "Midway authentication completed successfully!"
-                        Write-Info "Your Midway session is valid for 24 hours"
-                    }
-                    else {
-                        Write-Warning-Custom "mwinit exited with code: $LASTEXITCODE"
-                        Write-Info "If authentication succeeded, you can ignore this warning"
-                    }
-                }
-                catch {
-                    Write-Error-Custom "Midway authentication failed: $_"
-                    Write-Info "Please try running 'mwinit -o -s' manually"
-                }
-                
-                # Show reminders and troubleshooting
-                Write-Host ""
-                Read-Host "Press Enter to view troubleshooting tips"
-                
-                Show-DailySetupReminder
-                Show-TroubleshootingInfo
-                
-                Write-Host ""
-                Read-Host "Press Enter to close this window"
-                exit 0
-            }
-            "5" {
-                # Exit
-                Write-Info "Exiting setup script"
-                exit 0
-            }
-            default {
-                Write-Error-Custom "Invalid choice. Please run the script again and select 1-5."
-                Read-Host "`nPress Enter to close this window"
-                exit 1
-            }
-        }
-        
-        # Pause and offer to join Slack community
-        Write-Host ""
-        Write-Info "Join the Slack group #gandalf-mcp-interest for updates and community support!"
-        Read-Host "`nPress Enter to open Slack and close this window"
-        
-        # Open Slack channel in browser
-        try {
-            Start-Process "https://amazon.enterprise.slack.com/archives/C09P4PLRRJB"
-        }
-        catch {
-            Write-Info "Could not open Slack automatically. Visit: https://amazon.enterprise.slack.com/archives/C09P4PLRRJB"
-        }
-        
-    }
-    catch {
-        Write-Error-Custom "Setup failed: $_"
-        Write-Info "Check the log file for details: $script:LogFile"
-        Write-Info "Join Slack channel #gandalf-mcp-interest for assistance"
-        
-        # Pause to prevent window from closing on error
-        Read-Host "`nPress Enter to close this window"
-        exit 1
-    }
-}
-
-# Run the main function
-Main
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo"><span class="aws"><i class="fa-brands fa-aws"></i></span> Startup Credits</div>
+    <div class="topbar-links">
+      <a onclick="scrollToSection('programs')">Programs</a>
+      <a onclick="scrollToSection('how')">How It Works</a>
+      <a onclick="scrollToSection('eligibility')">Eligibility</a>
+      <a onclick="scrollToSection('faq')">FAQ</a>
+      <a href="https://aws.amazon.com/startups/" target="_blank">AWS Startups <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px"></i></a>
+    </div>
+  </div>
+  <button class="topbar-cta" onclick="scrollToSection('programs')">Check My Eligibility</button>
+</div>
+<div class="admin-toggle" onclick="toggleAdmin()">
+  <i class="fa-solid fa-lock"></i> <span id="admin-toggle-text">Admin Portal</span>
+</div>
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3><i class="fa-solid fa-pen-to-square"></i> Edit Request Details</h3>
+    <div class="form-group"><label class="form-label">Company Name</label><input class="form-input" id="edit-company" type="text" value="NovaSpark AI"></div>
+    <div class="form-row"><div class="form-group"><label class="form-label">Program</label><select class="form-select" id="edit-program"><option>Activate</option><option>Incremental Workloads</option><option selected>Gen AI</option></select></div><div class="form-group"><label class="form-label">Status</label><select class="form-select" id="edit-status"><option selected>Pending Review</option><option>Approved</option><option>Auto-Approved</option><option>Denied</option><option>On Hold</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label class="form-label">Credit Amount</label><input class="form-input" id="edit-amount" type="text" value="\$12,000"></div><div class="form-group"><label class="form-label">Funding Stage</label><select class="form-select" id="edit-stage"><option>Pre-Seed</option><option>Seed</option><option selected>Series A</option><option>Series B</option><option>Series C+</option></select></div></div>
+    <div class="form-group"><label class="form-label">Internal Notes</label><input class="form-input" id="edit-notes" type="text" placeholder="Add notes for the team..."></div>
+    <div class="form-group"><label class="form-label">Assigned Rep</label><input class="form-input" id="edit-rep" type="text" value="Unassigned"></div>
+    <div class="modal-actions"><button class="modal-btn primary" onclick="saveEdit()">Save Changes</button><button class="modal-btn secondary" onclick="closeModal()">Cancel</button></div>
+  </div>
+</div>
+<div id="view-customer" class="view active">
+  <div class="hero">
+    <div class="hero-tag"><i class="fa-solid fa-bolt" style="margin-right:4px"></i> No Sales Rep Required</div>
+    <h1>Get AWS credits to <span class="hl">Boost your startup</span> — instantly</h1>
+    <p>Apply for credits in minutes, get approved automatically, and start building on AWS today. No meetings, no paperwork, no waiting.</p>
+    <div class="hero-credit-highlight">Potentially up to \$100K+ worth of eligible credits</div>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="scrollToSection('programs')"><i class="fa-solid fa-rocket"></i> View Programs</button>
+      <button class="btn btn-ghost" onclick="scrollToSection('how')">How It Works</button>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><div class="trust-val">50K+</div><div class="trust-lbl">Startups Funded</div></div>
+      <div class="trust-item"><div class="trust-val">&lt; 15 min</div><div class="trust-lbl">Application Time</div></div>
+      <div class="trust-item"><div class="trust-val">Instant</div><div class="trust-lbl">Approval for Most</div></div>
+      <div class="trust-item"><div class="trust-val">\$0</div><div class="trust-lbl">Cost to Apply</div></div>
+    </div>
+  </div>
+  <div class="section" id="programs">
+    <div class="sec-header"><h2>Choose your credit program</h2><p>Select the program that best fits your stage and needs. Apply in minutes — most startups are approved instantly.</p></div>
+    <div class="programs">
+      <div class="prog-card popular">
+        <div class="prog-icon orange"><i class="fa-solid fa-rocket"></i></div>
+        <div class="prog-name">Activate</div>
+        <div class="prog-tagline">For early-stage and funded startups building on AWS</div>
+        <ul class="prog-features"><li><i class="fa-solid fa-check"></i> Ideal for startups at any funding stage</li><li><i class="fa-solid fa-check"></i> Apply credits to any AWS service</li><li><i class="fa-solid fa-check"></i> Technical training and support included</li><li><i class="fa-solid fa-check"></i> Architecture guidance available</li><li><i class="fa-solid fa-check"></i> Fast approval — most within 24 hours</li></ul>
+        <a class="prog-btn" href="https://aws.amazon.com/startups/credits/" target="_blank">Apply Now — Free <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px; margin-left:4px"></i></a>
+      </div>
+      <div class="prog-card">
+        <div class="prog-icon teal"><i class="fa-solid fa-arrows-turn-to-dots"></i></div>
+        <div class="prog-name">Incremental Workloads</div>
+        <div class="prog-tagline">For startups migrating or expanding workloads on AWS</div>
+        <ul class="prog-features"><li><i class="fa-solid fa-check"></i> Migration support and tooling included</li><li><i class="fa-solid fa-check"></i> Architecture assessment provided</li><li><i class="fa-solid fa-check"></i> Move from any source cloud or on-prem</li><li><i class="fa-solid fa-check"></i> Cost optimization review</li><li><i class="fa-solid fa-check"></i> Approved within 24 hours</li></ul>
+        <a class="prog-btn outline" href="https://aws.amazon.com/aws-startups/migrate/" target="_blank">Apply Now — Free <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px; margin-left:4px"></i></a>
+      </div>
+      <div class="prog-card">
+        <div class="prog-icon purple"><i class="fa-solid fa-brain"></i></div>
+        <div class="prog-name">Gen AI</div>
+        <div class="prog-tagline">For startups building generative AI applications on AWS</div>
+        <ul class="prog-features"><li><i class="fa-solid fa-check"></i> Credits for Bedrock, SageMaker, and more</li><li><i class="fa-solid fa-check"></i> Access to foundation models</li><li><i class="fa-solid fa-check"></i> AI/ML architecture support</li><li><i class="fa-solid fa-check"></i> Partner ecosystem access</li><li><i class="fa-solid fa-check"></i> Approved within 24 hours</li></ul>
+        <a class="prog-btn outline" href="https://aws.amazon.com/ai/agentic-ai/?nc2=h_l1_f&refid=e8ebd086-eec0-4f1d-9176-ca000fac6191" target="_blank">Apply Now — Free <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px; margin-left:4px"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="section-alt" id="how"><div class="section"><div class="sec-header"><h2>How it works</h2><p>From application to credits in your account — no meetings, no phone calls, no reps.</p></div><div class="steps"><div class="step"><div class="step-num">1</div><div class="step-icon"><i class="fa-solid fa-file-lines"></i></div><div class="step-title">Tell Us About You</div><div class="step-desc">Company name, funding stage, what you're building — takes under 15 minutes</div></div><div class="step"><div class="step-num">2</div><div class="step-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><div class="step-title">Instant Eligibility</div><div class="step-desc">Our system checks your info and matches you to the right program automatically</div></div><div class="step"><div class="step-num">3</div><div class="step-icon"><i class="fa-solid fa-circle-check"></i></div><div class="step-title">Get Approved</div><div class="step-desc">Most startups are approved instantly. Some programs confirm within 24 hours</div></div><div class="step"><div class="step-num">4</div><div class="step-icon"><i class="fa-solid fa-bolt"></i></div><div class="step-title">Start Building</div><div class="step-desc">Credits are applied to your AWS account immediately — start using any service</div></div></div></div></div>
+  <div class="section" id="eligibility"><div class="sec-header"><h2>Am I eligible?</h2><p>Most early-stage startups qualify. Here's what you need and what to expect.</p></div><div class="elig-grid"><div class="elig-card"><h3><i class="fa-solid fa-laptop-code"></i> Technical Requirements</h3><ul class="elig-list"><li>Active AWS account (or create one when you apply)</li><li>Plan to use AWS for your primary workload</li><li>No minimum current AWS spend</li><li>Credits work with most AWS services</li></ul></div><div class="elig-card"><h3><i class="fa-solid fa-clock"></i> What to Expect</h3><ul class="elig-list"><li>Application takes under 15 minutes</li><li>Most approvals are instant or within 24 hours</li><li>Credits activated same day upon approval</li><li>No cost, commitment, or rep required to apply</li></ul></div></div></div>
+  <div class="section-alt" id="faq"><div class="section"><div class="sec-header"><h2>Frequently asked questions</h2></div><div class="faq"><div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do I need to talk to an AWS sales rep?<i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">No. The entire process is self-service. You apply online, get approved automatically (for most programs), and credits are applied to your account — all without speaking to anyone.</div></div><div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long do the credits last?<i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Credit validity varies by program, typically ranging from 12 to 24 months. You'll see the specific terms during the application process.</div></div><div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I apply to multiple programs?<i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Yes — you may be eligible for multiple programs depending on your use case. For example, you could qualify for both Activate and the Gen AI program if you're building AI applications.</div></div><div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What AWS services do credits cover?<i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">Credits apply to most AWS services including EC2, S3, Lambda, RDS, Bedrock, SageMaker, and more. Some exclusions apply (e.g., AWS Marketplace purchases, Route 53 domain registration).</div></div><div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What happens when my credits run out?<i class="fa-solid fa-chevron-down"></i></div><div class="faq-a">You'll be billed at standard AWS pay-as-you-go rates for any usage beyond your credit balance. We'll notify you when your credits are running low so there are no surprises.</div></div></div></div></div>
+  <div class="cta-footer"><h2>Ready to get started?</h2><p>Join 50,000+ startups already building on AWS. Apply in under 15 minutes, get credits fast, and start scaling your idea today.</p><button class="btn btn-primary" onclick="scrollToSection('programs')"><i class="fa-solid fa-rocket"></i> Apply for Credits</button><br><a href="https://aws.amazon.com/startups/" target="_blank" class="aws-link"><i class="fa-brands fa-aws"></i> Learn more at AWS Startups <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px"></i></a></div>
+</div>
+<div id="view-admin" class="view">
+  <div class="admin-bar"><h2><i class="fa-solid fa-gauge-high"></i>
